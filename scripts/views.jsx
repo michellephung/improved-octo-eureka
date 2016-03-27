@@ -1,24 +1,25 @@
 requirejs([
-  "store",
-  "action",
-  "dispatcher"
+  "../build/store",
+  "../build/actions",
+  "../build/dispatcher"
 ],
-function(Store, Action, Dispatcher) {
-  
+function(Store, Actions, Dispatcher) {
+
   var App = React.createClass({
     render: function () {
       return (
-        <StartPlayingWordInput />
-        <StartBtn />
+        <div>
+          <StartPlayingWordInput />
+          <StartBtn />
+        </div>
       );
     }
-
   });
 
 
   var StartPlayingWordInput = React.createClass({
     handleChange: function () {
-      Action.startWordTyping();
+      Actions.startWordTyping();
     },
     render: function () {
       return (
@@ -35,7 +36,7 @@ function(Store, Action, Dispatcher) {
       return (
         <input type="submit" text="Start"/>
       );
-    }
+    },
 
     handleClick: function () {
       console.log("click");
@@ -45,21 +46,16 @@ function(Store, Action, Dispatcher) {
         var startBtn;
 
         if (this.props.showStartBtn) {
-          startBtn = this.startBtn();
+          return this.startBtn();
         }
 
-        return (
-          <input 
-            onClick={this.handleClick} 
-            placeholder="Start" />
-          {startBtn}
-        );
-    )}
+        return null;
+    }
   });
 
   ReactDOM.render(
     <App />,
-    document.getElementById('app')
+    document.getElementById('html-hook')
   );
 
 });

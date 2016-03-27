@@ -1,6 +1,17 @@
-var Counter = React.createClass({
+var App = React.createClass({
+
+	render: function () {
+		return (
+			<StartPlayingWordInput />
+		);
+    }
+
+});
+
+
+var StartPlayingWordInput = React.createClass({
     getInitialState: function () {
-      return { clickCount: 0 };
+ 		return null;
     },
     handleClick: function () {
       this.setState(function(state) {
@@ -9,14 +20,14 @@ var Counter = React.createClass({
     },
     render: function () {
 		return (
-			<div onClick={this.handleClick}>
-				Click me! Number of clicks: {this.state.clickCount}
-			</div>
+			<input 
+				onChange={this.handleChange} 
+				placeholder="Type a word" />
 		);
     }
  });
 
 ReactDOM.render(
-	<Counter />,
+	<App />,
 	document.getElementById('app')
 );

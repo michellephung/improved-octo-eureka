@@ -1,8 +1,18 @@
-var Counter = React.createClass({
-  displayName: 'Counter',
+var App = React.createClass({
+  displayName: "App",
+
+
+  render: function () {
+    return React.createElement(StartPlayingWordInput, null);
+  }
+
+});
+
+var StartPlayingWordInput = React.createClass({
+  displayName: "StartPlayingWordInput",
 
   getInitialState: function () {
-    return { clickCount: 0 };
+    return null;
   },
   handleClick: function () {
     this.setState(function (state) {
@@ -10,13 +20,10 @@ var Counter = React.createClass({
     });
   },
   render: function () {
-    return React.createElement(
-      'div',
-      { onClick: this.handleClick },
-      'Click me! Number of clicks: ',
-      this.state.clickCount
-    );
+    return React.createElement("input", {
+      onChange: this.handleChange,
+      placeholder: "Type a word" });
   }
 });
 
-ReactDOM.render(React.createElement(Counter, null), document.getElementById('app'));
+ReactDOM.render(React.createElement(App, null), document.getElementById('app'));

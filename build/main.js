@@ -3,7 +3,7 @@
 // var Views = require("views");
 // var Actions = require("actions");
 
-requirejs(["../scripts/store", "../scripts/action", "../scripts/dispatcher", "../scripts/views"], function (Store, Action, Dispatcher, views) {
+requirejs(["store", "action", "dispatcher", "views"], function (Store, Action, Dispatcher, views) {
 	var Counter = React.createClass({
 		displayName: "Counter",
 

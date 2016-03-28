@@ -1,7 +1,8 @@
-define(function () {
-    return {
-        startWordTyping: function () {
-            console.log("startWordTyping");
-        }
-    };
+define([], function () {
+  console.log("a");
+  return {
+    startWordTyping: function (action) {
+      console.log("action--startWordTyping");
+    }
+  };
 });

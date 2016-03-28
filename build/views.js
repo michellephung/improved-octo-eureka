@@ -1,4 +1,4 @@
-requirejs(["../build/store", "../build/actions", "../build/dispatcher"], function (Store, Actions, Dispatcher) {
+requirejs(["store", "actions"], function (Store, Actions) {
 
   var App = React.createClass({
     displayName: "App",

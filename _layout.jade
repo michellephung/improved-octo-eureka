@@ -3,11 +3,13 @@ html
   head
     meta(charset="utf-8")
     title Hangman
-    link(rel="stylesheet" href="main.css")    
-    script(src="scripts/libs/react.js")
-    script(src="scripts/libs/react-dom.min.js")
+    link(rel="stylesheet" href="main.css")
+    script(src="build/libs/underscore.js")
+    script(src="build/libs/react.js")
+    script(src="build/libs/react-dom.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js")
-    script(src="scripts/libs/require.js" data-main="build/main")
-    script(type="text/babel" src="app.js" )
+    script(data-main="build/main" src="build/libs/require.js")
+    script(src="app.js" type="text/babel")
+    
   body
     != yield

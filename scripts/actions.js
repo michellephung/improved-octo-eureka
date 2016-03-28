@@ -1,7 +1,10 @@
-define(function () {
+define([
+],
+function () {
+  console.log("a");
     return {
-        startWordTyping: function () {
-          console.log("startWordTyping");
+        startWordTyping: function (action) {
+          console.log("action--startWordTyping");
         }
     };
 });

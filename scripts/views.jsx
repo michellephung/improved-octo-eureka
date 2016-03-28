@@ -1,9 +1,8 @@
 requirejs([
-  "../build/store",
-  "../build/actions",
-  "../build/dispatcher"
+  "store",
+  "actions"
 ],
-function(Store, Actions, Dispatcher) {
+function(Store, Actions) {
 
   var App = React.createClass({
     render: function () {

@@ -1,1 +1,1 @@
-console.log("stor");
+console.log("store");

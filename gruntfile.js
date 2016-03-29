@@ -8,19 +8,21 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      source: {
-        files: [
-          'sass/**/*.scss',
-          '*.jade',
-          'views/*.jsx',
-          'views/js/main.js'
-        ],
-        tasks: [
-          'sass',
-          'jade',
-          'babel:jsx',
-          'browserify'
-        ]
+      sass: {
+        files: ['sass/**/*.scss'],
+        tasks: ['sass']
+      },
+      jade: {
+        files: ['*.jade'],
+        tasks: ['jade']
+      },
+      babel: {
+        files: ['views/*.jsx'],
+        tasks: ['babel:jsx']
+      },
+      browserify: {
+        files: ['views/js/main.js'],
+        tasks: ['browserify']
       }
     },
 

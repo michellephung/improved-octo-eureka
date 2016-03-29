@@ -1,62 +1,62 @@
 console.log("v");
-// requirejs([
-//   "React",
-//   "ReactDOM",
-//   "store",
-//   "actions"
-// ], function(React, ReactDOM, Store, Actions) {
 
-//   var App = React.createClass({
-//     render: function () {
-//       return (
-//         <div>
-//           <StartPlayingWordInput />
-//           <StartBtn />
-//         </div>
-//       );
-//     }
-//   });
+var React = require("react");
+var ReactDOM = require("react-dom");
+var Store = require("./store");
+var Actions = require("./actions");
 
-
-//   var StartPlayingWordInput = React.createClass({
-//     handleChange: function () {
-//       Actions.startWordTyping("j");
-//     },
-//     render: function () {
-//       return (
-//         <input 
-//           onChange={this.handleChange} 
-//           placeholder="Type a word" />
-//       );
-//     }
-//   });
+var App = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <StartPlayingWordInput />
+        <StartBtn />
+      </div>
+    );
+  }
+});
 
 
-//   var StartBtn = React.createClass({
-//     startBtn: function () {
-//       return (
-//         <input type="submit" text="Start"/>
-//       );
-//     },
+var StartPlayingWordInput = React.createClass({
+  handleChange: function () {
+    Actions.startWordTyping("j");
+  },
+  render: function () {
+    return (
+      <input 
+        onChange={this.handleChange} 
+        placeholder="Type a word" />
+    );
+  }
+});
 
-//     handleClick: function () {
-//       console.log("click");
-//     },
 
-//     render: function () {
-//         var startBtn;
+var StartBtn = React.createClass({
+  startBtn: function () {
+    return (
+      <input type="submit" text="Start"/>
+    );
+  },
 
-//         if (this.props.showStartBtn) {
-//           return this.startBtn();
-//         }
+  handleClick: function () {
+    console.log("click");
+  },
 
-//         return null;
-//     }
-//   });
+  render: function () {
+      var startBtn;
 
-//   ReactDOM.render(
-//     <App />,
-//     document.getElementById('html-hook')
-//   );
+      if (this.props.showStartBtn) {
+        return this.startBtn();
+      }
 
-// });
+      return <div>hi</div>;
+  }
+});
+
+console.log(document.getElementById("app"));
+ReactDOM.render(
+  <App />,
+  document.getElementById('app')
+);
+
+console.log("vx");

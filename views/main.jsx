@@ -1,1 +1,1 @@
-console.log("fuck yes!!");
+var components = require('./components');

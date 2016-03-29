@@ -19685,7 +19685,7 @@ var Constants = require('./constants');
 var Actions = {
   startWordTyping: function startWordTyping(options) {
     AppDispatcher.dispatch({
-      actionType: Constants.TODO_CREATE,
+      actionType: Constants.TYPING_START,
       options: options
     });
   }
@@ -19761,7 +19761,7 @@ ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 "use strict";
 
 module.exports = {
-  TODO_CREATE: "TODO_CREATE"
+  TYPING_START: "TYPING_START"
 };
 
 },{}],168:[function(require,module,exports){
@@ -19781,8 +19781,8 @@ var CHANGE_EVENT = 'change';
 
 var _todos = {};
 
-function hello() {
-  console.log("hello");
+function hello(a) {
+  console.log("hello", a);
 }
 
 var Store = assign({}, EventEmitter.prototype, {
@@ -19802,11 +19802,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
-  var text;
 
   switch (action.actionType) {
-    case Constants.TODO_CREATE:
-      hello();
+    case Constants.TYPING_START:
+      hello(action.options);
       Store.emitChange();
       break;
 

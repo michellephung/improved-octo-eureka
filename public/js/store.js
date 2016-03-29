@@ -9,8 +9,8 @@ var CHANGE_EVENT = 'change';
 
 var _todos = {};
 
-function hello() {
-  console.log("hello");
+function hello(a) {
+  console.log("hello", a);
 }
 
 var Store = assign({}, EventEmitter.prototype, {
@@ -30,11 +30,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
-  var text;
 
   switch (action.actionType) {
-    case Constants.TODO_CREATE:
-      hello();
+    case Constants.TYPING_START:
+      hello(action.options);
       Store.emitChange();
       break;
 

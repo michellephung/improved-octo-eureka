@@ -1,5 +1,5 @@
 "use strict";
 
 module.exports = {
-  TODO_CREATE: "TODO_CREATE"
+  TYPING_START: "TYPING_START"
 };

@@ -4,7 +4,7 @@ var Constants = require('./constants');
 var Actions = {
   startWordTyping: function(options) {
     AppDispatcher.dispatch({
-      actionType: Constants.TODO_CREATE,
+      actionType: Constants.TYPING_START,
       options: options
     });
   }

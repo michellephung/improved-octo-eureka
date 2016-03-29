@@ -1,3 +1,3 @@
 'use strict';
 
-var components = require('./components');
+var App = require('./components');

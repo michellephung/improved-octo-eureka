@@ -1,1 +1,1 @@
-var components = require('./components');
+var App = require('./components');

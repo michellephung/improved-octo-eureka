@@ -14,11 +14,11 @@ module.exports = function(grunt) {
       },
       jade: {
         files: ['*.jade'],
-        tasks: ['jade']
+        tasks: ['jade', 'browserify']
       },
       babel: {
         files: ['views/*.jsx'],
-        tasks: ['babel:jsx']
+        tasks: ['babel:jsx', 'browserify']
       },
       browserify: {
         files: ['views/js/main.js'],
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
     },
 
     browserify: {
-      compile: {
+      dist: {
         files: [ {
           src: "public/js/main.js",
           dest: "public/js/bundle.js"

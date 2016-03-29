@@ -1,11 +1,11 @@
 "use strict";
 
-console.log("v");
-
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Store = require("./store");
 var Actions = require("./actions");
+
+console.log("actions", Actions);
 
 var App = React.createClass({
   displayName: "App",
@@ -59,7 +59,4 @@ var StartBtn = React.createClass({
   }
 });
 
-console.log(document.getElementById("app"));
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
-
-console.log("vx");

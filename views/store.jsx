@@ -74,20 +74,29 @@ var Store = assign({}, EventEmitter.prototype, {
   setShowStartBtn: function (bool) {
     this._showStartBtn = bool;
   },
+
   setShowScreen: function (screen) {
     this._showScreen = screen;
   },
+
   getShowScreen: function () {
     return this._showScreen;
   },
+
   showStartBtn: function () {
     return this._showStartBtn;
   },
+
   setWord: function (word) {
     this._word = word.trim().toLowerCase();
   },
+
   getWord:function () {
     return this._word;
+  },
+
+  hideStartBtn: function () {
+    this._showStartBtn = false;
   },
 
   emitChange: function() {
@@ -119,6 +128,10 @@ var Store = assign({}, EventEmitter.prototype, {
         this.addGuessedLetter(action.letter);
         this.emitChange();
         break;
+
+      case ActionTypes.HIDE_START_BTN:
+        this.hideStartBtn();
+        this.emitChange();
 
       default:
         // do nothing

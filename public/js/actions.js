@@ -21,6 +21,11 @@ var Actions = {
       type: ActionTypes.GUESS_LETTER,
       letter: letter
     });
+  },
+  hideStartBtn: function hideStartBtn() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.HIDE_START_BTN
+    });
   }
 };
 

@@ -89,25 +89,51 @@ var StartPlayingWordInput = React.createClass({
       wordMax: this.props.wordMax
     };
   },
+
   handleChange: function handleChange(e) {
     var word = e.target.value;
     var max = this.state.wordMax;
-    word = word.substr(0, max);
-
+    word = word.substr(0, max).toLowerCase();
+    word = this.validateword(word);
     this.setState({ value: word });
     Actions.startWordTyping(word);
   },
+
+  validateword: function validateword(word) {
+
+    var w = word.split('');
+    var build = '';
+    w.map(function (letter) {
+      if (/([a-z])+/.test(letter)) {
+        build += letter;
+      }
+    });
+
+    return build;
+  },
+
+  hideStartBtn: function hideStartBtn() {
+    if (this.state.value === '') {
+      Actions.hideStartBtn();
+    }
+  },
+
   keepFocus: function keepFocus() {
     ReactDOM.findDOMNode(this.refs.wordinput).focus();
   },
+
   componentDidMount: function componentDidMount() {
     this.keepFocus();
   },
+
   keyUp: function keyUp(e) {
+    this.keepFocus();
+    this.hideStartBtn();
     if (e.which === 13) {
       Actions.wordSumbitted();
     }
   },
+
   maxReachedMessage: function maxReachedMessage() {
     if (this.state.value.length === this.state.wordMax) {
       return React.createElement(
@@ -118,6 +144,7 @@ var StartPlayingWordInput = React.createClass({
     }
     return '';
   },
+
   render: function render() {
     var word = this.state.value === '' ? "Type a word" : this.state.value;
     var maxReachedMessage = this.maxReachedMessage();
@@ -141,6 +168,7 @@ var StartPlayingWordInput = React.createClass({
     );
   }
 });
+
 var StartBtn = React.createClass({
   displayName: "StartBtn",
 
@@ -176,6 +204,7 @@ var Hangman = React.createClass({
       remainingGuesses: this.props.remainingGuesses
     };
   },
+
   render: function render() {
     return React.createElement(
       "div",
@@ -193,6 +222,7 @@ var Hangman = React.createClass({
     );
   }
 });
+
 var Alphabet = React.createClass({
   displayName: "Alphabet",
 
@@ -233,6 +263,7 @@ var Alphabet = React.createClass({
     );
   }
 });
+
 var GuessBox = React.createClass({
   displayName: "GuessBox",
 
@@ -241,11 +272,13 @@ var GuessBox = React.createClass({
       letter: ''
     };
   },
+
   handleChange: function handleChange(e) {
     var letter = e.target.value;
     letter = letter.substr(0, 1);
     this.setState({ letter: letter });
   },
+
   clear: function clear(e) {
     if (e.which === 13) {
       Actions.guessSubmitted(this.state.letter);
@@ -253,12 +286,15 @@ var GuessBox = React.createClass({
       this.setState({ letter: '' });
     }
   },
+
   keepFocus: function keepFocus() {
     ReactDOM.findDOMNode(this.refs.letterinput).focus();
   },
+
   componentDidMount: function componentDidMount() {
     this.keepFocus();
   },
+
   render: function render() {
     var letter = this.state.letter;
     return React.createElement(
@@ -284,6 +320,7 @@ var GuessBox = React.createClass({
     );
   }
 });
+
 var HiddenWord = React.createClass({
   displayName: "HiddenWord",
 

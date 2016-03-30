@@ -83,25 +83,51 @@ var StartPlayingWordInput = React.createClass({
       wordMax: this.props.wordMax
     };
   },
+
   handleChange: function (e) {
     var word = e.target.value;
     var max = this.state.wordMax;
-    word = word.substr(0, max);
-
+    word = word.substr(0, max).toLowerCase();
+    word = this.validateword(word);
     this.setState({value: word});
     Actions.startWordTyping(word);
   },
+
+  validateword: function (word) {
+
+    var w = word.split('');
+    var build = '';
+    w.map(function (letter) {
+      if(/([a-z])+/.test(letter)) {
+        build += letter;
+      }
+    })
+  
+    return build;
+  },
+
+  hideStartBtn: function () {
+    if (this.state.value === '') {
+      Actions.hideStartBtn();
+    }
+  },
+
   keepFocus: function () {
     ReactDOM.findDOMNode(this.refs.wordinput).focus(); 
   },
+
   componentDidMount: function () {
     this.keepFocus(); 
   },
+
   keyUp: function (e) {
+    this.keepFocus();
+    this.hideStartBtn();
     if (e.which === 13) {
       Actions.wordSumbitted();
     }
   },
+
   maxReachedMessage: function () {
     if (this.state.value.length === this.state.wordMax) {
       return (
@@ -112,6 +138,7 @@ var StartPlayingWordInput = React.createClass({
     }
     return '';
   },
+
   render: function () {
     var word = this.state.value === '' ? "Type a word" : this.state.value;
     var maxReachedMessage = this.maxReachedMessage();
@@ -133,6 +160,7 @@ var StartPlayingWordInput = React.createClass({
     );
   }
 });
+
 var StartBtn = React.createClass({
   startBtn: function () {
     return (
@@ -166,6 +194,7 @@ var Hangman = React.createClass({
       remainingGuesses: this.props.remainingGuesses
     }
   },
+
   render: function () {
     return (
       <div id="hangman" className="middle-row">
@@ -175,6 +204,7 @@ var Hangman = React.createClass({
     );
   }
 });
+
 var Alphabet  = React.createClass({
 
   alphabetSplit: function () {
@@ -213,17 +243,20 @@ var Alphabet  = React.createClass({
     );
   }
 });
+
 var GuessBox  = React.createClass({
   getInitialState: function() {
     return {
       letter: ''
     };
   },
+
   handleChange: function (e) {
     var letter = e.target.value;
     letter = letter.substr(0, 1);
     this.setState({letter: letter});
   },
+
   clear: function (e) {
     if (e.which === 13) {
       Actions.guessSubmitted(this.state.letter);
@@ -231,12 +264,15 @@ var GuessBox  = React.createClass({
       this.setState({letter: ''});
     }
   },
+
   keepFocus: function () {
     ReactDOM.findDOMNode(this.refs.letterinput).focus(); 
   },
+
   componentDidMount: function () {
     this.keepFocus(); 
   },
+
   render: function () {
     var letter = this.state.letter;
     return (
@@ -256,6 +292,7 @@ var GuessBox  = React.createClass({
     );
   }
 });
+
 var HiddenWord = React.createClass({
   getInitialState: function () {
     return {

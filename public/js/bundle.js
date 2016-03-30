@@ -21093,7 +21093,8 @@ module.exports = {
   TYPING_START: 'TYPING_START',
   START_GAME: 'START_GAME',
   GUESS_LETTER: 'GUESS_LETTER',
-  HIDE_START_BTN: 'HIDE_START_BTN'
+  HIDE_START_BTN: 'HIDE_START_BTN',
+  RESET: 'RESET'
 };
 
 },{}],166:[function(require,module,exports){
@@ -21110,6 +21111,11 @@ var AppDispatcher = require('./AppDispatcher');
 var ActionTypes = require('./ActionTypes');
 
 var Actions = {
+  reset: function reset() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.RESET
+    });
+  },
   startWordTyping: function startWordTyping(word) {
     AppDispatcher.dispatch({
       type: ActionTypes.TYPING_START,
@@ -21133,6 +21139,7 @@ var Actions = {
       type: ActionTypes.HIDE_START_BTN
     });
   }
+
 };
 
 module.exports = Actions;
@@ -21509,6 +21516,10 @@ var Results = React.createClass({
     return "You Lost";
   },
 
+  tryAgain: function tryAgain() {
+    Actions.reset();
+  },
+
   render: function render() {
 
     var results = this.getResultsMsg();
@@ -21527,7 +21538,12 @@ var Results = React.createClass({
         null,
         "The word was [",
         word,
-        "]."
+        "]"
+      ),
+      React.createElement(
+        "a",
+        { href: "#", onClick: this.tryAgain },
+        "Try Again"
       )
     );
   }
@@ -21678,6 +21694,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
       case ActionTypes.HIDE_START_BTN:
         this.hideStartBtn();
+        this.emitChange();
+
+      case ActionTypes.RESET:
+        this.init();
         this.emitChange();
 
       default:

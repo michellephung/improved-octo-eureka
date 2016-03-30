@@ -4,6 +4,11 @@ var AppDispatcher = require('./AppDispatcher');
 var ActionTypes = require('./ActionTypes');
 
 var Actions = {
+  reset: function reset() {
+    AppDispatcher.dispatch({
+      type: ActionTypes.RESET
+    });
+  },
   startWordTyping: function startWordTyping(word) {
     AppDispatcher.dispatch({
       type: ActionTypes.TYPING_START,
@@ -27,6 +32,7 @@ var Actions = {
       type: ActionTypes.HIDE_START_BTN
     });
   }
+
 };
 
 module.exports = Actions;

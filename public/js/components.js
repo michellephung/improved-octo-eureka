@@ -369,6 +369,10 @@ var Results = React.createClass({
     return "You Lost";
   },
 
+  tryAgain: function tryAgain() {
+    Actions.reset();
+  },
+
   render: function render() {
 
     var results = this.getResultsMsg();
@@ -387,7 +391,12 @@ var Results = React.createClass({
         null,
         "The word was [",
         word,
-        "]."
+        "]"
+      ),
+      React.createElement(
+        "a",
+        { href: "#", onClick: this.tryAgain },
+        "Try Again"
       )
     );
   }

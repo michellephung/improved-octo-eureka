@@ -135,6 +135,10 @@ var Store = assign({}, EventEmitter.prototype, {
         this.hideStartBtn();
         this.emitChange();
 
+      case ActionTypes.RESET:
+        this.init();
+        this.emitChange();
+
       default:
       // do nothing
     }

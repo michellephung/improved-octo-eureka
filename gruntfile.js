@@ -25,12 +25,11 @@ module.exports = function(grunt) {
         tasks: ['browserify']
       }
     },
-
     jade: {
       compile: {
         options: {
-            client: false,
-            pretty: true
+          client: false,
+          pretty: true
         },
         files: [ {
           src: '**/*.jade',

@@ -1,2 +1,80 @@
 body {
-  background: powderblue; }
+  background: white; }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none; }
+
+#start-screen {
+  text-align: center; }
+  #start-screen #start-word {
+    text-align: center; }
+    #start-screen #start-word input {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      background-color: rgba(255, 255, 255, 0.5);
+      height: 0px;
+      border: none; }
+    #start-screen #start-word #show-word {
+      font-size: 80px;
+      margin: 100px auto 50px auto;
+      width: 80%;
+      word-wrap: break-word; }
+    #start-screen #start-word #max-letter {
+      color: red;
+      padding: 10px; }
+  #start-screen #start-btn {
+    display: block;
+    width: 60%;
+    height: 60px;
+    border: none;
+    font-size: 24px;
+    background-color: #60C760;
+    color: white;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%); }
+    #start-screen #start-btn:hover, #start-screen #start-btn:focus {
+      background-color: #4CAF50; }
+
+#game-screen {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%; }
+  #game-screen #alphabet {
+    border: 1px solid orange;
+    order: 0;
+    flex: 1 1 100%;
+    text-align: center;
+    line-height: 100px;
+    height: 100px; }
+  #game-screen #hangman {
+    border: 1px solid tomato;
+    order: 1;
+    flex: 1 400px;
+    max-width: 400px; }
+  #game-screen .middle-row {
+    height: 300px; }
+  #game-screen #guessbox {
+    border: 1px solid pink;
+    order: 2;
+    flex: 1 400px;
+    max-width: 400px; }
+    #game-screen #guessbox input {
+      font-size: 160px;
+      width: calc(100% - 80px);
+      text-align: center;
+      padding: 40px; }
+  #game-screen #hidden-word {
+    border: 1px solid gray;
+    order: 3;
+    flex: 1 1 100%;
+    height: 100px;
+    font-size: 36px;
+    text-align: center;
+    word-wrap: break-word;
+    width: 100%; }

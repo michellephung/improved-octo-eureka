@@ -1,11 +1,23 @@
 var AppDispatcher = require('./AppDispatcher');
-var Constants = require('./constants');
+var ActionTypes = require('./ActionTypes');
 
 var Actions = {
-  startWordTyping: function(options) {
+  startWordTyping: function (word) {
     AppDispatcher.dispatch({
-      actionType: Constants.TYPING_START,
-      options: options
+      type: ActionTypes.TYPING_START,
+      word: word
+    });
+  },
+
+  wordSumbitted: function () {
+    AppDispatcher.dispatch({
+      type: ActionTypes.START_GAME
+    });
+  },
+  guessSumbitted: function (letter) {
+    AppDispatcher.dispatch({
+      type: ActionTypes.GUESS_LETTER,
+      letter: letter
     });
   }
 };

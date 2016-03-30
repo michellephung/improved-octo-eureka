@@ -1,10 +1,10 @@
 # Hangman
 
 
-###To view static page, 
-click on public/index.html
+##To view static page:
+Click on public/index.html
 
-###To Develop:
+##To develop:
 Run 
 
 	`npm install` 

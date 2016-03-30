@@ -21150,7 +21150,8 @@ var App = React.createClass({
       word: Store.getWord(),
       wordMax: Store.getWordMax(),
       guessedLetters: Store.getGuessedLetters(),
-      remainingGuesses: Store.getRemainingGuesses()
+      remainingGuesses: Store.getRemainingGuesses(),
+      isWinner: Store.getResults()
     };
   },
 
@@ -21191,14 +21192,20 @@ var App = React.createClass({
           React.createElement(Alphabet, { guessedLetters: guessedLetters }),
           React.createElement(Hangman, { remainingGuesses: this.state.remainingGuesses }),
           React.createElement(GuessBox, null),
-          React.createElement(HiddenWord, { guessedLetters: guessedLetters, word: this.state.word })
+          React.createElement(HiddenWord, {
+            guessedLetters: guessedLetters,
+            word: this.state.word
+          })
         );
 
       case 'results':
         return React.createElement(
           "div",
           { id: "results-screen" },
-          React.createElement(Alphabet, null)
+          React.createElement(Results, {
+            isWinner: this.state.isWinner,
+            word: this.state.word
+          })
         );
       default:
         return null;
@@ -21268,7 +21275,6 @@ var StartPlayingWordInput = React.createClass({
     );
   }
 });
-
 var StartBtn = React.createClass({
   displayName: "StartBtn",
 
@@ -21427,7 +21433,6 @@ var HiddenWord = React.createClass({
     var guessObj = this.props.guessedLetters;
 
     return wordArray.map(function (letter, i) {
-      console.log(letter, guessObj, !_.isEmpty(guessObj));
       if (!guessObj.hasOwnProperty(letter)) {
         letter = '_';
       }
@@ -21451,7 +21456,39 @@ var HiddenWord = React.createClass({
 });
 
 /*--------------------ResultScreen--------------------------*/
+var Results = React.createClass({
+  displayName: "Results",
 
+  getResultsMsg: function getResultsMsg() {
+    if (this.props.isWinner) {
+      return "You Won!";
+    }
+    return "You Lost";
+  },
+
+  render: function render() {
+
+    var results = this.getResultsMsg();
+    var word = this.props.word;
+
+    return React.createElement(
+      "div",
+      null,
+      React.createElement(
+        "div",
+        { className: "result" },
+        results
+      ),
+      React.createElement(
+        "div",
+        null,
+        "The word was [",
+        word,
+        "]."
+      )
+    );
+  }
+});
 /*--------------------RenderAll--------------------------*/
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
@@ -21483,6 +21520,7 @@ var Store = assign({}, EventEmitter.prototype, {
     this._wordMax = 20;
     this._guessedLetters = {};
     this._remainingGuesses = 7;
+    this._isWinner = false;
   },
 
   getWordMax: function getWordMax() {
@@ -21498,26 +21536,43 @@ var Store = assign({}, EventEmitter.prototype, {
   },
 
   addGuessedLetter: function addGuessedLetter(letter) {
-    var letterObject = {};
-    letterObject[letter] = this.isLetterInWord(letter);
+    if (!this._guessedLetters.hasOwnProperty(letter)) {
+      this._remainingGuesses--;
+      var letterObject = {};
+      letterObject[letter] = this.isLetterInWord(letter);
+      this._guessedLetters = assign(this._guessedLetters, letterObject);
+    }
+    this.checkForWinner();
+  },
 
-    this._guessedLetters = assign(this._guessedLetters, letterObject);
-    this.setRemainingGuesses();
+  getResults: function getResults() {
+    return this._isWinner;
+  },
+
+  checkForWinner: function checkForWinner() {
+    var wordArray = this._word.split('');
+    var winner = true;
+
+    wordArray.map(function (letter) {
+      if (!this._guessedLetters.hasOwnProperty(letter)) {
+        winner = false;
+        return false;
+      }
+    }.bind(this));
+
+    if (this._remainingGuesses === 0 || winner === true) {
+      this.setShowScreen('results');
+    }
+
+    this._isWinner = winner;
   },
 
   isLetterInWord: function isLetterInWord(letter) {
     var position = this._word.indexOf(letter);
     if (position > -1) {
-      return "correctGuess";
+      return 'correctGuess';
     }
-    return "incorrectGuess";
-  },
-
-  setRemainingGuesses: function setRemainingGuesses() {
-    this._remainingGuesses--;
-    // if (this._remainingGuesses === 0) {
-    //   this.setShowScreen('results');
-    // }
+    return 'incorrectGuess';
   },
 
   setShowStartBtn: function setShowStartBtn(bool) {
@@ -21533,7 +21588,7 @@ var Store = assign({}, EventEmitter.prototype, {
     return this._showStartBtn;
   },
   setWord: function setWord(word) {
-    this._word = word.trim();
+    this._word = word.trim().toLowerCase();
   },
   getWord: function getWord() {
     return this._word;
@@ -21565,7 +21620,6 @@ var Store = assign({}, EventEmitter.prototype, {
         break;
 
       case ActionTypes.GUESS_LETTER:
-        console.log("guess", action.letter);
         this.addGuessedLetter(action.letter);
         this.emitChange();
         break;

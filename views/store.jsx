@@ -16,6 +16,7 @@ var Store = assign({}, EventEmitter.prototype, {
     this._wordMax = 20;
     this._guessedLetters = {};
     this._remainingGuesses = 7;
+    this._isWinner = false;
   },
 
   getWordMax: function () {
@@ -31,26 +32,43 @@ var Store = assign({}, EventEmitter.prototype, {
   },
 
   addGuessedLetter: function (letter) {
-    var letterObject = {};
-    letterObject[letter] = this.isLetterInWord(letter);
+    if (!this._guessedLetters.hasOwnProperty(letter)) {
+      this._remainingGuesses--;
+      var letterObject = {};
+      letterObject[letter] = this.isLetterInWord(letter);
+      this._guessedLetters = assign(this._guessedLetters, letterObject);
+    }
+    this.checkForWinner();
+  },
 
-    this._guessedLetters = assign(this._guessedLetters, letterObject);
-    this.setRemainingGuesses();
+  getResults: function () {
+    return this._isWinner;
+  },
+
+  checkForWinner: function () {
+    var wordArray = this._word.split('');
+    var winner = true;
+
+    wordArray.map(function (letter) {
+      if (!this._guessedLetters.hasOwnProperty(letter)) {
+        winner = false;
+        return false;
+      }
+    }.bind(this));
+
+    if (this._remainingGuesses === 0 || winner === true) {
+      this.setShowScreen('results');
+    }
+
+    this._isWinner = winner;  
   },
 
   isLetterInWord: function (letter) {
     var position = this._word.indexOf(letter);
     if(position > -1) {
-      return "correctGuess";
+      return 'correctGuess';
     }
-    return "incorrectGuess";
-  },
-
-  setRemainingGuesses: function () {
-    this._remainingGuesses--;
-    // if (this._remainingGuesses === 0) {
-    //   this.setShowScreen('results');
-    // }
+    return 'incorrectGuess';
   },
 
   setShowStartBtn: function (bool) {
@@ -66,7 +84,7 @@ var Store = assign({}, EventEmitter.prototype, {
     return this._showStartBtn;
   },
   setWord: function (word) {
-    this._word = word.trim();
+    this._word = word.trim().toLowerCase();
   },
   getWord:function () {
     return this._word;
@@ -98,7 +116,6 @@ var Store = assign({}, EventEmitter.prototype, {
         break;
 
       case ActionTypes.GUESS_LETTER:
-        console.log("guess",action.letter);
         this.addGuessedLetter(action.letter);
         this.emitChange();
         break;

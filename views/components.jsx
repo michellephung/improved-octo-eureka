@@ -12,7 +12,8 @@ var App = React.createClass({
       word: Store.getWord(),
       wordMax: Store.getWordMax(),
       guessedLetters: Store.getGuessedLetters(),
-      remainingGuesses: Store.getRemainingGuesses()
+      remainingGuesses: Store.getRemainingGuesses(),
+      isWinner: Store.getResults()
     }
   },
   
@@ -52,14 +53,20 @@ var App = React.createClass({
             <Alphabet guessedLetters={guessedLetters} />
             <Hangman remainingGuesses={this.state.remainingGuesses}/>
             <GuessBox />
-            <HiddenWord guessedLetters={guessedLetters} word={this.state.word}/>
+            <HiddenWord 
+              guessedLetters={guessedLetters}
+              word={this.state.word}
+            />
           </div>
         );
 
       case 'results':
         return (
           <div id="results-screen">
-            <Alphabet />
+            <Results 
+              isWinner={this.state.isWinner} 
+              word={this.state.word}
+            />
           </div>
         );
       default:
@@ -126,7 +133,6 @@ var StartPlayingWordInput = React.createClass({
     );
   }
 });
-
 var StartBtn = React.createClass({
   startBtn: function () {
     return (
@@ -264,7 +270,6 @@ var HiddenWord = React.createClass({
 
     return (
       wordArray.map(function (letter, i) {
-        console.log(letter, guessObj, !_.isEmpty(guessObj));
         if (!guessObj.hasOwnProperty(letter)) {
           letter = '_';
         }
@@ -287,7 +292,27 @@ var HiddenWord = React.createClass({
 });
 
 /*--------------------ResultScreen--------------------------*/
+var Results = React.createClass({
+  getResultsMsg: function () {
+    if (this.props.isWinner) {
+      return "You Won!";
+    }
+    return "You Lost";
+  },
 
+  render: function () {
+
+    var results = this.getResultsMsg();
+    var word = this.props.word;
+
+    return (
+      <div>
+        <div className="result">{results}</div>
+        <div>The word was [{word}].</div>
+      </div>
+    );
+  }
+});
 /*--------------------RenderAll--------------------------*/
 ReactDOM.render(
   <App />,

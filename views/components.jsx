@@ -2,7 +2,7 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var Store = require("./store");
 var Actions = require("./actions");
-var _ = require('underscore');
+var _=require('underscore');
 
 var App = React.createClass({
   getStoreState: function () {
@@ -25,7 +25,7 @@ var App = React.createClass({
   },
 
   componentWillUnmount: function () {
-    activeTasksStore.off('change', this.onChange, this);
+    Store.off('change', this.onChange, this);
   },
 
   onChange: function () {
@@ -45,17 +45,23 @@ var App = React.createClass({
           </div>
         );
       case 'game':
+
+        var guessedLetters = this.state.guessedLetters;
         return (
           <div id="game-screen">
-            
-            <Alphabet />
-            <Hangman />
+            <Alphabet guessedLetters={guessedLetters} />
+            <Hangman remainingGuesses={this.state.remainingGuesses}/>
             <GuessBox />
-            <HiddenWord word={this.state.word}/>
+            <HiddenWord guessedLetters={guessedLetters} word={this.state.word}/>
           </div>
         );
 
-      case 'result':
+      case 'results':
+        return (
+          <div id="results-screen">
+            <Alphabet />
+          </div>
+        );
       default:
         return null;
     };
@@ -149,16 +155,55 @@ var StartBtn = React.createClass({
 
 /*--------------------GameScreen--------------------------*/
 var Hangman = React.createClass({
+  getInitialState: function () {
+    return {
+      remainingGuesses: this.props.remainingGuesses
+    }
+  },
   render: function () {
     return (
-      <div id="hangman">Remaining</div>
+      <div id="hangman" className="middle-row">
+        <div className="text">Remaining:</div>
+        <div className="big-text">{this.props.remainingGuesses}</div>
+      </div>
     );
   }
 });
 var Alphabet  = React.createClass({
-  render: function () {
+
+  alphabetSplit: function () {
+    var alphabet = "abcdefghijklmnopqrstuvwxyz".split('');
+    var guessObj = this.props.guessedLetters;
+    var word = this.props.word;
+
     return (
-      <div id="alphabet" className="middle-row">abcdefghijklmnopqrstuvwxyz</div>
+      alphabet.map(function (letter, i) {
+        var guessedAlready = '';
+        if (!_.isEmpty(guessObj)) {
+
+          var guessed = guessObj.hasOwnProperty(letter);
+
+          if (guessed && guessObj[letter] === "incorrectGuess") {
+            guessedAlready = 'incorrect-guess';
+          }
+          if (guessed && guessObj[letter] === "correctGuess") {
+            guessedAlready = 'correct-guess';
+          }
+        }
+
+        return (
+          <span className={guessedAlready} key={i}>
+            {letter}
+          </span>
+        );
+      })
+    );
+  },
+
+  render: function () {
+    var alphabet = this.alphabetSplit();
+    return (
+      <div id="alphabet">{alphabet}</div>
     );
   }
 });
@@ -171,16 +216,14 @@ var GuessBox  = React.createClass({
   handleChange: function (e) {
     var letter = e.target.value;
     letter = letter.substr(0, 1);
-    this.setState({value: letter});
-    Actions.guess(letter);
+    this.setState({letter: letter});
   },
-  keyUp: function (e) {
+  clear: function (e) {
     if (e.which === 13) {
-      Actions.guessSumbitted(this.state.letter);
+      Actions.guessSubmitted(this.state.letter);
+    } else {
+      this.setState({letter: ''});
     }
-  },
-  clear: function () {
-    this.setState({value: ''});
   },
   keepFocus: function () {
     ReactDOM.findDOMNode(this.refs.letterinput).focus(); 
@@ -192,16 +235,15 @@ var GuessBox  = React.createClass({
     var letter = this.state.letter;
     return (
       <div id="guessbox" className="middle-row">
-        <div id="text">Type a letter and press enter to guess:</div>
+        <div className="text">Type a letter and press enter to guess:</div>
         <input 
           onChange={this.handleChange}
           onKeyDown={this.clear}
-          onKeyUp={this.keyUp}
           onBlur={this.keepFocus}
-          value={this.state.value}
+          value={this.state.letter}
           ref='letterinput'
         />
-        <div id="show-letter">
+        <div id="show-letter" className="big-text">
           {letter}
         </div>
       </div>
@@ -211,16 +253,24 @@ var GuessBox  = React.createClass({
 var HiddenWord = React.createClass({
   getInitialState: function () {
     return {
-      word: this.props.word
+      word: this.props.word,
+      guessedLetters: this.props.guessedLetters
     };
   },
 
   hideWord: function () {
-    var wordArray = this.state.word.split('');
+    var wordArray = this.props.word.split('');
+    var guessObj = this.props.guessedLetters;
+
     return (
       wordArray.map(function (letter, i) {
+        console.log(letter, guessObj, !_.isEmpty(guessObj));
+        if (!guessObj.hasOwnProperty(letter)) {
+          letter = '_';
+        }
+
         return (
-          <span data={i}>
+          <span className="letters" key={i}>
             {letter}
           </span>
         );

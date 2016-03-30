@@ -46,31 +46,40 @@ button:focus {
   justify-content: center;
   width: 100%; }
   #game-screen #alphabet {
-    border: 1px solid orange;
     order: 0;
     flex: 1 1 100%;
     text-align: center;
     line-height: 100px;
-    height: 100px; }
+    height: 100px;
+    color: #A9ABA5; }
+    #game-screen #alphabet .incorrect-guess {
+      color: #BD4F4F; }
+    #game-screen #alphabet .correct-guess {
+      color: black; }
   #game-screen #hangman {
-    border: 1px solid tomato;
     order: 1;
     flex: 1 400px;
     max-width: 400px; }
   #game-screen .middle-row {
-    height: 300px; }
+    height: 300px;
+    text-align: center; }
+    #game-screen .middle-row .big-text {
+      font-size: 160px;
+      width: calc(100% - 80px);
+      padding: 0;
+      margin: auto; }
+    #game-screen .middle-row .text {
+      color: #888; }
   #game-screen #guessbox {
-    border: 1px solid pink;
     order: 2;
     flex: 1 400px;
     max-width: 400px; }
     #game-screen #guessbox input {
-      font-size: 160px;
-      width: calc(100% - 80px);
-      text-align: center;
-      padding: 40px; }
+      border: none;
+      font-size: 0px;
+      position: fixed;
+      top: 0; }
   #game-screen #hidden-word {
-    border: 1px solid gray;
     order: 3;
     flex: 1 1 100%;
     height: 100px;
@@ -78,3 +87,5 @@ button:focus {
     text-align: center;
     word-wrap: break-word;
     width: 100%; }
+    #game-screen #hidden-word .letters {
+      padding-right: 1px; }

@@ -16,17 +16,49 @@ var Store = assign({}, EventEmitter.prototype, {
     this._showStartBtn = false;
     this._word = '';
     this._wordMax = 20;
+    this._guessedLetters = {};
+    this._remainingGuesses = 7;
   },
 
   getWordMax: function getWordMax() {
     return this._wordMax;
   },
 
+  getRemainingGuesses: function getRemainingGuesses() {
+    return this._remainingGuesses;
+  },
+
+  getGuessedLetters: function getGuessedLetters() {
+    return this._guessedLetters;
+  },
+
+  addGuessedLetter: function addGuessedLetter(letter) {
+    var letterObject = {};
+    letterObject[letter] = this.isLetterInWord(letter);
+
+    this._guessedLetters = assign(this._guessedLetters, letterObject);
+    this.setRemainingGuesses();
+  },
+
+  isLetterInWord: function isLetterInWord(letter) {
+    var position = this._word.indexOf(letter);
+    if (position > -1) {
+      return "correctGuess";
+    }
+    return "incorrectGuess";
+  },
+
+  setRemainingGuesses: function setRemainingGuesses() {
+    this._remainingGuesses--;
+    // if (this._remainingGuesses === 0) {
+    //   this.setShowScreen('results');
+    // }
+  },
+
   setShowStartBtn: function setShowStartBtn(bool) {
     this._showStartBtn = bool;
   },
   setShowScreen: function setShowScreen(screen) {
-    console.log("setScreen", screen);
     this._showScreen = screen;
   },
   getShowScreen: function getShowScreen() {
@@ -41,10 +73,6 @@ var Store = assign({}, EventEmitter.prototype, {
   getWord: function getWord() {
     return this._word;
   },
-
-  getGuessedLetters: function getGuessedLetters() {},
-
-  getRemainingGuesses: function getRemainingGuesses() {},
 
   emitChange: function emitChange() {
     this.emit(CHANGE_EVENT);
@@ -72,7 +100,8 @@ var Store = assign({}, EventEmitter.prototype, {
         break;
 
       case ActionTypes.GUESS_LETTER:
-        console.log(action.letter);
+        console.log("guess", action.letter);
+        this.addGuessedLetter(action.letter);
         this.emitChange();
         break;
 

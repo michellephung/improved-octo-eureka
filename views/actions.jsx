@@ -14,7 +14,7 @@ var Actions = {
       type: ActionTypes.START_GAME
     });
   },
-  guessSumbitted: function (letter) {
+  guessSubmitted: function (letter) {
     AppDispatcher.dispatch({
       type: ActionTypes.GUESS_LETTER,
       letter: letter

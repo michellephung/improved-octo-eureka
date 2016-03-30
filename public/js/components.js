@@ -29,7 +29,7 @@ var App = React.createClass({
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    activeTasksStore.off('change', this.onChange, this);
+    Store.off('change', this.onChange, this);
   },
 
   onChange: function onChange() {
@@ -49,16 +49,23 @@ var App = React.createClass({
           React.createElement(StartBtn, { showStartBtn: this.state.showStartBtn })
         );
       case 'game':
+
+        var guessedLetters = this.state.guessedLetters;
         return React.createElement(
           "div",
           { id: "game-screen" },
-          React.createElement(Alphabet, null),
-          React.createElement(Hangman, null),
+          React.createElement(Alphabet, { guessedLetters: guessedLetters }),
+          React.createElement(Hangman, { remainingGuesses: this.state.remainingGuesses }),
           React.createElement(GuessBox, null),
-          React.createElement(HiddenWord, { word: this.state.word })
+          React.createElement(HiddenWord, { guessedLetters: guessedLetters, word: this.state.word })
         );
 
-      case 'result':
+      case 'results':
+        return React.createElement(
+          "div",
+          { id: "results-screen" },
+          React.createElement(Alphabet, null)
+        );
       default:
         return null;
     };
@@ -158,22 +165,65 @@ var StartBtn = React.createClass({
 var Hangman = React.createClass({
   displayName: "Hangman",
 
+  getInitialState: function getInitialState() {
+    return {
+      remainingGuesses: this.props.remainingGuesses
+    };
+  },
   render: function render() {
     return React.createElement(
       "div",
-      { id: "hangman" },
-      "Remaining"
+      { id: "hangman", className: "middle-row" },
+      React.createElement(
+        "div",
+        { className: "text" },
+        "Remaining:"
+      ),
+      React.createElement(
+        "div",
+        { className: "big-text" },
+        this.props.remainingGuesses
+      )
     );
   }
 });
 var Alphabet = React.createClass({
   displayName: "Alphabet",
 
+
+  alphabetSplit: function alphabetSplit() {
+    var alphabet = "abcdefghijklmnopqrstuvwxyz".split('');
+    var guessObj = this.props.guessedLetters;
+    var word = this.props.word;
+
+    return alphabet.map(function (letter, i) {
+      var guessedAlready = '';
+      if (!_.isEmpty(guessObj)) {
+
+        var guessed = guessObj.hasOwnProperty(letter);
+
+        if (guessed && guessObj[letter] === "incorrectGuess") {
+          guessedAlready = 'incorrect-guess';
+        }
+        if (guessed && guessObj[letter] === "correctGuess") {
+          guessedAlready = 'correct-guess';
+        }
+      }
+
+      return React.createElement(
+        "span",
+        { className: guessedAlready, key: i },
+        letter
+      );
+    });
+  },
+
   render: function render() {
+    var alphabet = this.alphabetSplit();
     return React.createElement(
       "div",
-      { id: "alphabet", className: "middle-row" },
-      "abcdefghijklmnopqrstuvwxyz"
+      { id: "alphabet" },
+      alphabet
     );
   }
 });
@@ -188,16 +238,14 @@ var GuessBox = React.createClass({
   handleChange: function handleChange(e) {
     var letter = e.target.value;
     letter = letter.substr(0, 1);
-    this.setState({ value: letter });
-    Actions.guess(letter);
+    this.setState({ letter: letter });
   },
-  keyUp: function keyUp(e) {
+  clear: function clear(e) {
     if (e.which === 13) {
-      Actions.guessSumbitted(this.state.letter);
+      Actions.guessSubmitted(this.state.letter);
+    } else {
+      this.setState({ letter: '' });
     }
-  },
-  clear: function clear() {
-    this.setState({ value: '' });
   },
   keepFocus: function keepFocus() {
     ReactDOM.findDOMNode(this.refs.letterinput).focus();
@@ -212,20 +260,19 @@ var GuessBox = React.createClass({
       { id: "guessbox", className: "middle-row" },
       React.createElement(
         "div",
-        { id: "text" },
+        { className: "text" },
         "Type a letter and press enter to guess:"
       ),
       React.createElement("input", {
         onChange: this.handleChange,
         onKeyDown: this.clear,
-        onKeyUp: this.keyUp,
         onBlur: this.keepFocus,
-        value: this.state.value,
+        value: this.state.letter,
         ref: "letterinput"
       }),
       React.createElement(
         "div",
-        { id: "show-letter" },
+        { id: "show-letter", className: "big-text" },
         letter
       )
     );
@@ -236,16 +283,24 @@ var HiddenWord = React.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      word: this.props.word
+      word: this.props.word,
+      guessedLetters: this.props.guessedLetters
     };
   },
 
   hideWord: function hideWord() {
-    var wordArray = this.state.word.split('');
+    var wordArray = this.props.word.split('');
+    var guessObj = this.props.guessedLetters;
+
     return wordArray.map(function (letter, i) {
+      console.log(letter, guessObj, !_.isEmpty(guessObj));
+      if (!guessObj.hasOwnProperty(letter)) {
+        letter = '_';
+      }
+
       return React.createElement(
         "span",
-        { data: i },
+        { className: "letters", key: i },
         letter
       );
     });

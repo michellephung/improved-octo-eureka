@@ -1,15 +1,18 @@
 module.exports = function(grunt) {
   grunt.initConfig ({
     sass: {
+      options: {
+        sourceMap: false
+      },
       dist: {
         files: {
-          'public/stylesheets/style.css' : 'sass/style.scss'
+          ['public/css/style.css'] : 'scss/style.scss'
         }
       }
     },
     watch: {
       sass: {
-        files: ['sass/**/*.scss'],
+        files: ['scss/**/*.scss'],
         tasks: ['sass']
       },
       jade: {

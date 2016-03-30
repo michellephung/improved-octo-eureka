@@ -129,7 +129,7 @@ var StartPlayingWordInput = React.createClass({
   keyUp: function keyUp(e) {
     this.keepFocus();
     this.hideStartBtn();
-    if (e.which === 13) {
+    if (e.which === 13 && this.state.value !== '') {
       Actions.wordSumbitted();
     }
   },

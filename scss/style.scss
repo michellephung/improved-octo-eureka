@@ -18,20 +18,14 @@ button:focus {
     text-align: center;
     
     input {
-      position: fixed;
-      top: 0px;
-      left: 0px;
       background-color: rgba(255, 255, 255, 0.5);
-      height: 1px;
-      color: white;
       border: none;
+      font-size: 50px;
+      width: 100%;
+      text-align: center;
+      padding: 50px 0px;
     }
-    #show-word {
-      font-size: 80px;
-      margin: 100px auto 50px auto;
-      width: 80%;
-      word-wrap: break-word;
-    }
+
     #max-letter {
       color: red;
       padding: 10px;
@@ -52,7 +46,6 @@ button:focus {
 
     &:hover, &:focus {
       background-color: #4CAF50;
-      
     }
   }
 }
@@ -92,8 +85,12 @@ button:focus {
     .big-text {
       font-size: 160px;
       width: calc(100% - 80px);
-      padding: 0;
+      padding: 50px;
       margin: auto;
+      vertical-align: middle;
+      height: 160px;
+      line-height: 160px;
+      font-family: arial;
     }
 
     .text {
@@ -107,12 +104,10 @@ button:focus {
     flex: 1 400px;
     max-width: 400px;
     
-
     input {
-      border: none;
-      font-size: 0px;
-      position: fixed;
-      top: 0;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: medium none;
     }
   }
   

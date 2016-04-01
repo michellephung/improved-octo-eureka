@@ -112,12 +112,6 @@ var StartPlayingWordInput = React.createClass({
     return build;
   },
 
-  hideStartBtn: function hideStartBtn() {
-    if (this.state.value === '') {
-      Actions.hideStartBtn();
-    }
-  },
-
   keepFocus: function keepFocus() {
     ReactDOM.findDOMNode(this.refs.wordinput).focus();
   },
@@ -126,8 +120,13 @@ var StartPlayingWordInput = React.createClass({
     this.keepFocus();
   },
 
+  hideStartBtn: function hideStartBtn() {
+    if (this.state.value === '') {
+      Actions.hideStartBtn();
+    }
+  },
+
   keyUp: function keyUp(e) {
-    this.keepFocus();
     this.hideStartBtn();
     if (e.which === 13 && this.state.value !== '') {
       Actions.wordSumbitted();
@@ -159,11 +158,6 @@ var StartPlayingWordInput = React.createClass({
         ref: "wordinput",
         placeholder: "Type a word"
       }),
-      React.createElement(
-        "div",
-        { id: "show-word" },
-        word
-      ),
       maxReachedMessage
     );
   }
@@ -276,7 +270,9 @@ var GuessBox = React.createClass({
   handleChange: function handleChange(e) {
     var letter = e.target.value;
     letter = letter.substr(0, 1);
-    this.setState({ letter: letter });
+    if (/([a-z])+/.test(letter)) {
+      this.setState({ letter: letter });
+    }
   },
 
   clear: function clear(e) {
@@ -310,13 +306,9 @@ var GuessBox = React.createClass({
         onKeyDown: this.clear,
         onBlur: this.keepFocus,
         value: this.state.letter,
+        className: "big-text",
         ref: "letterinput"
-      }),
-      React.createElement(
-        "div",
-        { id: "show-letter", className: "big-text" },
-        letter
-      )
+      })
     );
   }
 });

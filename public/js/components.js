@@ -273,14 +273,19 @@ var GuessBox = React.createClass({
     if (/([a-z])+/.test(letter)) {
       this.setState({ letter: letter });
     }
+    console.log("x");
   },
 
   clear: function clear(e) {
     if (e.which === 13) {
-      Actions.guessSubmitted(this.state.letter);
+      this.submitGuess();
     } else {
       this.setState({ letter: '' });
     }
+  },
+
+  submitGuess: function submitGuess() {
+    Actions.guessSubmitted(this.state.letter);
   },
 
   keepFocus: function keepFocus() {
@@ -308,7 +313,16 @@ var GuessBox = React.createClass({
         value: this.state.letter,
         className: "big-text",
         ref: "letterinput"
-      })
+      }),
+      React.createElement(
+        "button",
+        {
+          id: "submit-guess",
+          onClick: this.submitGuess
+        },
+        "Guess: ",
+        this.state.letter
+      )
     );
   }
 });

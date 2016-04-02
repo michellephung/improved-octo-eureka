@@ -62,11 +62,11 @@ button:focus {
     #game-screen .middle-row .big-text {
       font-size: 160px;
       width: calc(100% - 80px);
-      padding: 50px;
+      padding: 50px 0px 0px;
       margin: auto;
       vertical-align: middle;
-      height: 170px;
-      line-height: 160px;
+      height: 180px;
+      line-height: 180px;
       font-family: arial; }
     #game-screen .middle-row .text {
       color: #888; }
@@ -78,6 +78,14 @@ button:focus {
       text-align: center;
       background-color: rgba(255, 255, 255, 0.5);
       border: medium none; }
+  #game-screen button#submit-guess {
+    border: 1px solid #808080;
+    background-color: #808080;
+    color: #FFF;
+    height: 20px;
+    width: 150px;
+    border-radius: 5px;
+    cursor: pointer; }
   #game-screen #hidden-word {
     order: 3;
     flex: 1 1 100%;

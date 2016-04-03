@@ -7,8 +7,6 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _todos = {};
-
 var Store = assign({}, EventEmitter.prototype, {
 
   init: function init() {
@@ -35,9 +33,12 @@ var Store = assign({}, EventEmitter.prototype, {
 
   addGuessedLetter: function addGuessedLetter(letter) {
     if (!this._guessedLetters.hasOwnProperty(letter)) {
-      this._remainingGuesses--;
+
       var letterObject = {};
       letterObject[letter] = this.isLetterInWord(letter);
+      if (this.isLetterInWord(letter) === 'incorrectGuess') {
+        this._remainingGuesses--;
+      }
       this._guessedLetters = assign(this._guessedLetters, letterObject);
     }
     this.checkForWinner();

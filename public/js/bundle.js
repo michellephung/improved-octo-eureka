@@ -11616,6 +11616,10 @@ var ReactEmptyComponentInjection = {
   }
 };
 
+function registerNullComponentID() {
+  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+}
+
 var ReactEmptyComponent = function (instantiate) {
   this._currentElement = null;
   this._rootNodeID = null;
@@ -11624,7 +11628,7 @@ var ReactEmptyComponent = function (instantiate) {
 assign(ReactEmptyComponent.prototype, {
   construct: function (element) {},
   mountComponent: function (rootID, transaction, context) {
-    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
     this._rootNodeID = rootID;
     return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
   },
@@ -15930,7 +15934,7 @@ module.exports = ReactUpdates;
 
 'use strict';
 
-module.exports = '0.14.7';
+module.exports = '0.14.8';
 },{}],119:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -21247,7 +21251,6 @@ var StartPlayingWordInput = React.createClass({
   },
 
   validateword: function validateword(word) {
-
     var w = word.split('');
     var build = '';
     w.map(function (letter) {
@@ -21420,7 +21423,6 @@ var GuessBox = React.createClass({
     if (/([a-z])+/.test(letter)) {
       this.setState({ letter: letter });
     }
-    console.log("x");
   },
 
   clear: function clear(e) {
@@ -21555,7 +21557,18 @@ var Results = React.createClass({
   }
 });
 /*--------------------RenderAll--------------------------*/
-ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
+var renderApp = ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
+
+module.exports = {
+  App: App,
+  StartPlayingWordInput: StartPlayingWordInput,
+  StartBtn: StartBtn,
+  Hangman: Hangman,
+  Alphabet: Alphabet,
+  GuessBox: GuessBox,
+  HiddenWord: HiddenWord,
+  Results: Results
+};
 
 },{"./actions":167,"./store":170,"react":163,"react-dom":34,"underscore":164}],169:[function(require,module,exports){
 'use strict';
@@ -21573,8 +21586,6 @@ var ActionTypes = require('./ActionTypes');
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
-
-var _todos = {};
 
 var Store = assign({}, EventEmitter.prototype, {
 
@@ -21602,9 +21613,12 @@ var Store = assign({}, EventEmitter.prototype, {
 
   addGuessedLetter: function addGuessedLetter(letter) {
     if (!this._guessedLetters.hasOwnProperty(letter)) {
-      this._remainingGuesses--;
+
       var letterObject = {};
       letterObject[letter] = this.isLetterInWord(letter);
+      if (this.isLetterInWord(letter) === 'incorrectGuess') {
+        this._remainingGuesses--;
+      }
       this._guessedLetters = assign(this._guessedLetters, letterObject);
     }
     this.checkForWinner();

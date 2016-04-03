@@ -2,7 +2,7 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var Store = require("./store");
 var Actions = require("./actions");
-var _=require('underscore');
+var _ = require('underscore');
 
 var App = React.createClass({
   getStoreState: function () {
@@ -94,7 +94,6 @@ var StartPlayingWordInput = React.createClass({
   },
 
   validateword: function (word) {
-
     var w = word.split('');
     var build = '';
     w.map(function (letter) {
@@ -253,7 +252,6 @@ var GuessBox  = React.createClass({
     if (/([a-z])+/.test(letter)) {
       this.setState({letter: letter});
     }
-    console.log("x");
   },
 
   clear: function (e) {
@@ -363,8 +361,18 @@ var Results = React.createClass({
   }
 });
 /*--------------------RenderAll--------------------------*/
-ReactDOM.render(
+var renderApp = ReactDOM.render(
   <App />,
   document.getElementById('app')
 );
 
+module.exports = {
+  App: App,
+  StartPlayingWordInput: StartPlayingWordInput, 
+  StartBtn: StartBtn,
+  Hangman: Hangman,
+  Alphabet: Alphabet,
+  GuessBox: GuessBox,
+  HiddenWord: HiddenWord,
+  Results: Results,
+}

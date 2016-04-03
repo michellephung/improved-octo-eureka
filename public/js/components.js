@@ -100,7 +100,6 @@ var StartPlayingWordInput = React.createClass({
   },
 
   validateword: function validateword(word) {
-
     var w = word.split('');
     var build = '';
     w.map(function (letter) {
@@ -273,7 +272,6 @@ var GuessBox = React.createClass({
     if (/([a-z])+/.test(letter)) {
       this.setState({ letter: letter });
     }
-    console.log("x");
   },
 
   clear: function clear(e) {
@@ -408,4 +406,15 @@ var Results = React.createClass({
   }
 });
 /*--------------------RenderAll--------------------------*/
-ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
+var renderApp = ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
+
+module.exports = {
+  App: App,
+  StartPlayingWordInput: StartPlayingWordInput,
+  StartBtn: StartBtn,
+  Hangman: Hangman,
+  Alphabet: Alphabet,
+  GuessBox: GuessBox,
+  HiddenWord: HiddenWord,
+  Results: Results
+};

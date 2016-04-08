@@ -1,11 +1,28 @@
-readme.md
+# Hangman
 
-need:
 
-	npm install --global babel-cli
-	npm install babel-preset-react
+##To view static page:
+Click on public/index.html
 
-then: 
-	babel --presets react scripts/views.js --watch --out-dir build
+##To develop:
+Run 
 
-to watch and compile.
+	`npm install` 
+
+and wait for modules to download.  
+
+To compile static folder, run:
+	
+		$ grunt
+		
+To develop, run:
+
+		$ node app.js
+		
+you should see: `server is running` in that tab.
+
+In another terminal window, run:
+
+		$ grunt watch
+		
+Site is hosted at localhost:4000
